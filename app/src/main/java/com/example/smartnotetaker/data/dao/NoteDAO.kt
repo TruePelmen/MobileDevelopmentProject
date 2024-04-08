@@ -15,7 +15,7 @@ interface NoteDAO {
     @Delete
     fun delete(note: Note)
     @Query("SELECT * FROM note WHERE id IN (:noteId)")
-    fun loadAllById(noteId: Int): Note
+    fun loadAllById(noteId: Long): Note
     @Query("DELETE FROM note")
     fun deleteAll()
 }

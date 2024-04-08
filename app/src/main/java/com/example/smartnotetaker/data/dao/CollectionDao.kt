@@ -12,7 +12,7 @@ import com.example.smartnotetaker.data.entities.Collection
 interface CollectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCollection(collection: Collection): Long
+    fun insertCollection(collection: Collection)
 
     @Query("SELECT * FROM collections")
     fun getAllCollections(): List<Collection>
