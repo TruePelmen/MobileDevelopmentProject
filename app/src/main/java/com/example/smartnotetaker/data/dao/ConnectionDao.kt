@@ -11,7 +11,7 @@ import com.example.smartnotetaker.data.entities.Connection
 interface ConnectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertConnection(connection: Connection): Long
+    fun insertConnection(connection: Connection)
 
     @Query("SELECT * FROM connections")
     fun getAllConnections(): List<Connection>

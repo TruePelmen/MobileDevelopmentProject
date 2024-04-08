@@ -7,8 +7,6 @@ import androidx.room.TypeConverters
 import com.example.smartnotetaker.data.SqlDateConverter
 import java.sql.Date
 
-
-
 @Entity(tableName = "note")
 @TypeConverters(SqlDateConverter::class)
 data class Note(

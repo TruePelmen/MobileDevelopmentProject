@@ -1,10 +1,10 @@
-package com.example.smartnotetaker.repository
+package com.example.smartnotetaker.domain.repository
 
 import com.example.smartnotetaker.data.entities.Connection
 
 interface ConnectionRepository {
 
-    suspend fun insertConnection(connection: Connection): Long
+    suspend fun insertConnection(connection: Connection)
 
     suspend fun getAllConnections(): List<Connection>
 

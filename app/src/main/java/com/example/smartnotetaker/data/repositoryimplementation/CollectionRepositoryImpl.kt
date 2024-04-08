@@ -1,7 +1,7 @@
 package com.example.smartnotetaker.data.repositoryimplementation
 
 import com.example.smartnotetaker.data.dao.CollectionDao
-import com.example.smartnotetaker.repository.CollectionRepository
+import com.example.smartnotetaker.domain.repository.CollectionRepository
 import com.example.smartnotetaker.data.entities.Collection
 
 class CollectionRepositoryImpl(private val collectionDao: CollectionDao) : CollectionRepository {

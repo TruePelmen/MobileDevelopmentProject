@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.repository
+package com.example.smartnotetaker.domain.repository
 import com.example.smartnotetaker.data.entities.Collection
 interface CollectionRepository {
 

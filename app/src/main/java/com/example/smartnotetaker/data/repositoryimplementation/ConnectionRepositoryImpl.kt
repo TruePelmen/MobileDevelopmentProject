@@ -2,11 +2,11 @@ package com.example.smartnotetaker.data.repositoryimplementation
 
 import com.example.smartnotetaker.data.dao.ConnectionDao
 import com.example.smartnotetaker.data.entities.Connection
-import com.example.smartnotetaker.repository.ConnectionRepository
+import com.example.smartnotetaker.domain.repository.ConnectionRepository
 
 class ConnectionRepositoryImpl(private val connectionDao: ConnectionDao) : ConnectionRepository {
 
-    override suspend fun insertConnection(connection: Connection): Long {
+    override suspend fun insertConnection(connection: Connection){
         return connectionDao.insertConnection(connection)
     }
 
