@@ -9,7 +9,7 @@ import java.sql.Date
 
 @Entity(tableName = "note")
 @TypeConverters(SqlDateConverter::class)
-data class Note(
+data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val name: String,

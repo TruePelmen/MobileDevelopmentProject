@@ -6,25 +6,25 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.smartnotetaker.data.entities.Collection
+import com.example.smartnotetaker.data.entities.CollectionEntity
 
 @Dao
 interface CollectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCollection(collection: Collection)
+    fun insertCollection(collectionEntity: CollectionEntity):Long
 
     @Query("SELECT * FROM collections")
-    fun getAllCollections(): List<Collection>
+    fun getAllCollections(): List<CollectionEntity>
 
     @Query("SELECT * FROM collections WHERE id = :id")
-    fun getCollectionById(id: Long): Collection
+    fun getCollectionById(id: Long): CollectionEntity
 
     @Update
-    fun updateCollection(collection: Collection)
+    fun updateCollection(collectionEntity: CollectionEntity)
 
     @Delete
-    fun deleteCollection(collection: Collection)
+    fun deleteCollection(collectionEntity: CollectionEntity)
 
     @Query("DELETE FROM collections")
     fun deleteAllCollections()

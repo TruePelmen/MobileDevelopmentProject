@@ -7,8 +7,8 @@ import com.example.smartnotetaker.data.dao.CollectionDao
 import com.example.smartnotetaker.data.MyDatabase
 import com.example.smartnotetaker.data.dao.NoteDAO
 import com.example.smartnotetaker.databinding.ActivityMainBinding
-import com.example.smartnotetaker.data.entities.Collection
-import com.example.smartnotetaker.data.entities.Note
+import com.example.smartnotetaker.data.entities.CollectionEntity
+import com.example.smartnotetaker.data.entities.NoteEntity
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -25,12 +25,12 @@ class MainActivity : AppCompatActivity() {
         val collectionDao: CollectionDao = db.collectionDao()
 
         binding.btnSaveNote.setOnClickListener{
-            val note = Note(name = binding.etNoteName.text.toString(), text = binding.etNoteText.text.toString(), collectionId = binding.etNoteCollection.text.toString().toLong())
-            noteDao.insert(note)
+            val noteEntity = NoteEntity(name = binding.etNoteName.text.toString(), text = binding.etNoteText.text.toString(), collectionId = binding.etNoteCollection.text.toString().toLong())
+            noteDao.insert(noteEntity)
         }
         binding.btnSaveCollection.setOnClickListener{
-            val collection = Collection(name = binding.etCollectionName.text.toString())
-            collectionDao.insertCollection(collection)
+            val collectionEntity = CollectionEntity(name = binding.etCollectionName.text.toString())
+            collectionDao.insertCollection(collectionEntity)
         }
 
         binding.btnShowNote.setOnClickListener{

@@ -1,16 +1,16 @@
 package com.example.smartnotetaker.domain.repository
-import com.example.smartnotetaker.data.entities.Collection
+import com.example.smartnotetaker.data.entities.CollectionEntity
 interface CollectionRepository {
 
-    suspend fun insertCollection(collection: Collection)
+    suspend fun insertCollection(collectionEntity: CollectionEntity):Long
 
-    suspend fun getAllCollections(): List<Collection>
+    suspend fun getAllCollections(): List<CollectionEntity>
 
-    suspend fun getCollectionById(id: Long): Collection
+    suspend fun getCollectionById(id: Long): CollectionEntity
 
-    suspend fun updateCollection(collection: Collection)
+    suspend fun updateCollection(collectionEntity: CollectionEntity)
 
-    suspend fun deleteCollection(collection: Collection)
+    suspend fun deleteCollection(collectionEntity: CollectionEntity)
 
     suspend fun deleteAllCollections()
 }

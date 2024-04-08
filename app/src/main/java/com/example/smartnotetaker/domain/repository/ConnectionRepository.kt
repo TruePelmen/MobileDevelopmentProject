@@ -1,14 +1,14 @@
 package com.example.smartnotetaker.domain.repository
 
-import com.example.smartnotetaker.data.entities.Connection
+import com.example.smartnotetaker.data.entities.ConnectionEntity
 
 interface ConnectionRepository {
 
-    suspend fun insertConnection(connection: Connection)
+    suspend fun insertConnection(connectionEntity: ConnectionEntity):Long
 
-    suspend fun getAllConnections(): List<Connection>
+    suspend fun getAllConnections(): List<ConnectionEntity>
 
-    suspend fun getConnectionByNoteIds(note1Id: Long, note2Id: Long): Connection
+    suspend fun getConnectionByNoteIds(note1Id: Long, note2Id: Long): ConnectionEntity
 
-    suspend fun deleteConnection(connection: Connection)
+    suspend fun deleteConnection(connectionEntity: ConnectionEntity)
 }
