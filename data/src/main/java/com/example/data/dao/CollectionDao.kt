@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.data.dao
+package com.example.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.smartnotetaker.data.entities.CollectionEntity
+import com.example.data.entities.CollectionEntity
 
 @Dao
 interface CollectionDao {

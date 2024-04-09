@@ -1,9 +1,9 @@
-package com.example.smartnotetaker.data.repositoryimplementation
+package com.example.data.repositoryimplementation
 
-import com.example.smartnotetaker.data.dao.ConnectionDao
-import com.example.smartnotetaker.data.entities.ConnectionEntity
-import com.example.smartnotetaker.domain.models.Connection
-import com.example.smartnotetaker.domain.repository.ConnectionRepository
+import com.example.data.dao.ConnectionDao
+import com.example.data.entities.ConnectionEntity
+import com.example.domain.models.Connection
+import com.example.domain.repository.ConnectionRepository
 
 class ConnectionRepositoryImpl(private val connectionDao: ConnectionDao) : ConnectionRepository {
 

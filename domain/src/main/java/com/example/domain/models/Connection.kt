@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.domain.models
+package com.example.domain.models
 
 data class Connection(
     val id: Long,

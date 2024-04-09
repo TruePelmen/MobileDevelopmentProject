@@ -1,10 +1,10 @@
-package com.example.smartnotetaker.data.dao
+package com.example.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.smartnotetaker.data.entities.NoteEntity
+import com.example.data.entities.NoteEntity
 
 @Dao
 interface NoteDAO {

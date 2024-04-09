@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.data
+package com.example.data
 
 import androidx.room.TypeConverter
 import java.sql.Date

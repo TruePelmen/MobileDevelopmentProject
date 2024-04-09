@@ -1,11 +1,11 @@
-package com.example.smartnotetaker.data.dao
+package com.example.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.smartnotetaker.data.entities.ConnectionEntity
+import com.example.data.entities.ConnectionEntity
 
 @Dao
 interface ConnectionDao {

@@ -1,6 +1,6 @@
-package com.example.smartnotetaker.domain.repository
+package com.example.domain.repository
 
-import com.example.smartnotetaker.domain.models.Collection
+import com.example.domain.models.Collection
 
 interface CollectionRepository {
 

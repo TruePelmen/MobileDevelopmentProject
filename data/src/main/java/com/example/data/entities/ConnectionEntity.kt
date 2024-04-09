@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.data.entities
+package com.example.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

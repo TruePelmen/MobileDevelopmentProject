@@ -1,10 +1,10 @@
-package com.example.smartnotetaker.data.entities
+package com.example.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.smartnotetaker.data.SqlDateConverter
+import com.example.data.SqlDateConverter
 import java.sql.Date
 
 @Entity(tableName = "note")

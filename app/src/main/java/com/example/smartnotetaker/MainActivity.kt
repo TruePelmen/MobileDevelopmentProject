@@ -2,13 +2,18 @@ package com.example.smartnotetaker
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
-import com.example.smartnotetaker.data.dao.CollectionDao
-import com.example.smartnotetaker.data.MyDatabase
-import com.example.smartnotetaker.data.dao.NoteDAO
+import com.example.data.dao.CollectionDao
+import com.example.data.MyDatabase
+import com.example.data.dao.NoteDAO
 import com.example.smartnotetaker.databinding.ActivityMainBinding
-import com.example.smartnotetaker.data.entities.CollectionEntity
-import com.example.smartnotetaker.data.entities.NoteEntity
+import com.example.data.entities.CollectionEntity
+import com.example.data.entities.NoteEntity
+import com.example.data.repositoryimplementation.NoteRepositoryImpl
+import com.example.domain.models.Note
+import com.example.domain.usecase.CreateNoteUseCase
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -25,8 +30,11 @@ class MainActivity : AppCompatActivity() {
         val collectionDao: CollectionDao = db.collectionDao()
 
         binding.btnSaveNote.setOnClickListener{
-            val noteEntity = NoteEntity(name = binding.etNoteName.text.toString(), text = binding.etNoteText.text.toString(), collectionId = binding.etNoteCollection.text.toString().toLong())
-            noteDao.insert(noteEntity)
+            val note = Note(name = binding.etNoteName.text.toString(), text = binding.etNoteText.text.toString(), collectionId = binding.etNoteCollection.text.toString().toLong())
+            val createNoteUseCase = CreateNoteUseCase(NoteRepositoryImpl(noteDao))
+            lifecycleScope.launch {
+                createNoteUseCase.invoke(note)
+            }
         }
         binding.btnSaveCollection.setOnClickListener{
             val collectionEntity = CollectionEntity(name = binding.etCollectionName.text.toString())
