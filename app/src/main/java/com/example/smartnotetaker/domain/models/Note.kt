@@ -1,6 +1,6 @@
 package com.example.smartnotetaker.domain.models
 
-import java.util.Date
+import java.sql.Date
 
 data class Note(
     val id: Long,

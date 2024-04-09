@@ -6,7 +6,7 @@ import com.example.smartnotetaker.domain.repository.NoteRepository
 
 class CreateNoteUseCase(private val noteRepository: NoteRepository) {
 
-    suspend operator fun invoke(note: NoteEntity) {
+    suspend operator fun invoke(note: Note) {
         return noteRepository.insert(note)
     }
 }
