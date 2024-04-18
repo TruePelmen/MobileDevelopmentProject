@@ -9,7 +9,7 @@ import com.example.data.dao.CollectionDao
 import com.example.data.dao.ConnectionDao
 import com.example.data.dao.NoteDAO
 
-@Database(entities = [NoteEntity::class, CollectionEntity::class, ConnectionEntity::class], version = 3)
+@Database(entities = [NoteEntity::class, CollectionEntity::class, ConnectionEntity::class], version = 4)
 abstract class MyDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDAO
     abstract fun connectionDao(): ConnectionDao

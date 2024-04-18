@@ -1,6 +1,8 @@
 package com.example.smartnotetaker
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
@@ -15,9 +17,12 @@ import com.example.domain.models.Collection
 import com.example.domain.usecase.CreateCollectionUseCase
 import com.example.domain.usecase.CreateNoteUseCase
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.sql.Date
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -57,6 +62,8 @@ class MainActivity : AppCompatActivity() {
                     append(i.name)
                     append("\t")
                     append(i.text)
+                    append("\t")
+                    append(i.creationDate)
                     append("\t")
                     append("Collection: ${i.collectionId}")
                 }

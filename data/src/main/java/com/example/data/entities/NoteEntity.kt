@@ -18,6 +18,8 @@ data class NoteEntity(
     val nextRepetition: Date = Date(1648062400000L), // <- Стандартне значення
     @ColumnInfo(name = "last_repetition")
     val lastRepetition: Date = Date(1648062400000L), // <- Стандартне значення
+    @ColumnInfo(name = "creation_date")
+    val creationDate: Date = Date(1648062400000L),
     @ColumnInfo(name = "collection_id")
     val collectionId: Long
 )

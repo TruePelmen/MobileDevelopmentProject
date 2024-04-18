@@ -34,10 +34,10 @@ class NoteRepositoryImpl(private val noteDao: NoteDAO) : NoteRepository {
     }
 
     private fun NoteEntity.toDomain(): Note {
-        return Note(id, name, text, nextRepetition, lastRepetition, collectionId)
+        return Note(id, name, text, nextRepetition, lastRepetition, creationDate, collectionId)
     }
 
     private fun Note.toEntity(): NoteEntity {
-        return NoteEntity(id, name, text, nextRepetition, lastRepetition, collectionId)
+        return NoteEntity(id, name, text, nextRepetition, lastRepetition, creationDate, collectionId)
     }
 }

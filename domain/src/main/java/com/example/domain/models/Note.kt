@@ -8,5 +8,6 @@ data class Note(
     val text: String,
     val nextRepetition: Date = Date(1648062400000L),
     val lastRepetition: Date = Date(1648062400000L),
+    val creationDate: Date = Date(1648062400000L),
     val collectionId: Long
 )
