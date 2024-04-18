@@ -4,13 +4,23 @@ import com.example.data.dao.NoteDAO
 import com.example.data.entities.NoteEntity
 import com.example.domain.models.Note
 import com.example.domain.repository.NoteRepository
+import java.security.KeyStore.TrustedCertificateEntry
+import kotlin.math.exp
 
 class NoteRepositoryImpl(private val noteDao: NoteDAO) : NoteRepository {
 
     override suspend fun insert(note: Note) {
         // Мапуємо з Note на NoteEntity перед вставкою в базу даних
         val noteEntity = note.toEntity()
-        noteDao.insert(noteEntity)
+        val noteList = noteDao.getAll()
+        var hasSameName = false
+        noteList.forEach{
+            if (it.name == noteEntity.name)
+                hasSameName = true
+        }
+        if (!hasSameName) {
+            noteDao.insert(noteEntity)
+        }
     }
 
     override suspend fun getAll(): List<Note> {
