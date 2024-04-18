@@ -35,10 +35,10 @@ class CollectionRepositoryImpl(private val collectionDao: CollectionDao) : Colle
     }
 
     private fun CollectionEntity.toDomain(): Collection {
-        return Collection(id, name)
+        return Collection(id, name, creationDate)
     }
 
     private fun Collection.toEntity(): CollectionEntity {
-        return CollectionEntity(id, name)
+        return CollectionEntity(id, name, creationDate)
     }
 }

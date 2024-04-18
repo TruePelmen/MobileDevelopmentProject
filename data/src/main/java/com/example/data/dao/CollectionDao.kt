@@ -12,7 +12,7 @@ import com.example.data.entities.CollectionEntity
 interface CollectionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCollection(collectionEntity: CollectionEntity):Long
+    fun insertCollection(collectionEntity: CollectionEntity)
 
     @Query("SELECT * FROM collections")
     fun getAllCollections(): List<CollectionEntity>

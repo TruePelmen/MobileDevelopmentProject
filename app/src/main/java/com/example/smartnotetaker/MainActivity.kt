@@ -81,6 +81,9 @@ class MainActivity : AppCompatActivity() {
                     append(i.id)
                     append("\t")
                     append(i.name)
+                    append("\t")
+                    append(i.creationDate)
+                    append("\t")
                 }
             }
         }
