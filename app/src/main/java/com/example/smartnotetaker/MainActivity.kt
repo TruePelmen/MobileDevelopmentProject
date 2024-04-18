@@ -8,10 +8,11 @@ import com.example.data.dao.CollectionDao
 import com.example.data.MyDatabase
 import com.example.data.dao.NoteDAO
 import com.example.smartnotetaker.databinding.ActivityMainBinding
-import com.example.data.entities.CollectionEntity
-import com.example.data.entities.NoteEntity
+import com.example.data.repositoryimplementation.CollectionRepositoryImpl
 import com.example.data.repositoryimplementation.NoteRepositoryImpl
 import com.example.domain.models.Note
+import com.example.domain.models.Collection
+import com.example.domain.usecase.CreateCollectionUseCase
 import com.example.domain.usecase.CreateNoteUseCase
 import kotlinx.coroutines.launch
 
@@ -37,8 +38,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.btnSaveCollection.setOnClickListener{
-            val collectionEntity = CollectionEntity(name = binding.etCollectionName.text.toString())
-            collectionDao.insertCollection(collectionEntity)
+            val collection= Collection(name = binding.etCollectionName.text.toString())
+            val createCollectionUseCase = CreateCollectionUseCase(CollectionRepositoryImpl(collectionDao))
+            lifecycleScope.launch {
+                createCollectionUseCase.invoke(collection)
+            }
         }
 
         binding.btnShowNote.setOnClickListener{

@@ -4,7 +4,7 @@ import com.example.domain.models.Collection
 
 interface CollectionRepository {
 
-    suspend fun insertCollection(collection: Collection): Long
+    suspend fun insertCollection(collection: Collection)
 
     suspend fun getAllCollections(): List<Collection>
 

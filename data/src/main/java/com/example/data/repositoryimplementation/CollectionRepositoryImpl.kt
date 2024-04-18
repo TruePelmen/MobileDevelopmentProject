@@ -7,9 +7,9 @@ import com.example.domain.models.Collection
 
 class CollectionRepositoryImpl(private val collectionDao: CollectionDao) : CollectionRepository {
 
-    override suspend fun insertCollection(collection: Collection): Long {
+    override suspend fun insertCollection(collection: Collection) {
         val collectionEntity = collection.toEntity()
-        return collectionDao.insertCollection(collectionEntity)
+        collectionDao.insertCollection(collectionEntity)
     }
 
     override suspend fun getAllCollections(): List<Collection> {
