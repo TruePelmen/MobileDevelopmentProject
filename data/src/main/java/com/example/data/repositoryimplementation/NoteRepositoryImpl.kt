@@ -33,6 +33,11 @@ class NoteRepositoryImpl(private val noteDao: NoteDAO) : NoteRepository {
         noteDao.deleteAll()
     }
 
+    override suspend fun update(note: Note) {
+        val noteEntity = note.toEntity()
+        noteDao.update(noteEntity)
+    }
+
     private fun NoteEntity.toDomain(): Note {
         return Note(id, name, text, nextRepetition, lastRepetition, collectionId)
     }
