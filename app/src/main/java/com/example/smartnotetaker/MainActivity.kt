@@ -16,6 +16,9 @@ import com.example.domain.models.Note
 import com.example.domain.models.Collection
 import com.example.domain.usecase.CreateCollectionUseCase
 import com.example.domain.usecase.CreateNoteUseCase
+import com.example.domain.usecase.DeleteAllNotes
+import com.example.domain.usecase.DeleteCollectionUseCase
+import com.example.domain.usecase.GetAllNotesUseCase
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.sql.Date
@@ -35,16 +38,23 @@ class MainActivity : AppCompatActivity() {
         val noteDao: NoteDAO = db.noteDao()
         val collectionDao: CollectionDao = db.collectionDao()
 
+        val createNoteUseCase = CreateNoteUseCase(NoteRepositoryImpl(noteDao))
+        val createCollectionUseCase = CreateCollectionUseCase(CollectionRepositoryImpl(collectionDao))
+        val showNoteUseCase = GetAllNotesUseCase(NoteRepositoryImpl(noteDao))
+        val deleteAllNotesUseCase = DeleteAllNotes(NoteRepositoryImpl(noteDao))
+        val deleteAllCollectionUseCase = DeleteCollectionUseCase(CollectionRepositoryImpl(collectionDao))
+
+
         binding.btnSaveNote.setOnClickListener{
             val note = Note(name = binding.etNoteName.text.toString(), text = binding.etNoteText.text.toString(), collectionId = binding.etNoteCollection.text.toString().toLong())
-            val createNoteUseCase = CreateNoteUseCase(NoteRepositoryImpl(noteDao))
+
             lifecycleScope.launch {
                 createNoteUseCase.invoke(note)
             }
         }
         binding.btnSaveCollection.setOnClickListener{
             val collection= Collection(name = binding.etCollectionName.text.toString())
-            val createCollectionUseCase = CreateCollectionUseCase(CollectionRepositoryImpl(collectionDao))
+
             lifecycleScope.launch {
                 createCollectionUseCase.invoke(collection)
             }
@@ -52,8 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnShowNote.setOnClickListener{
             binding.tvNotes.text = ""
-            val noteCount = "NoteCount ${noteDao.getAll().count()}"
-            val noteList = noteDao.getAll()
+
+            var noteCount = ""
+            var noteList: List<Note> = listOf()
+            lifecycleScope.launch{
+                noteCount = "NoteCount ${showNoteUseCase.invoke().count()}"
+                noteList = showNoteUseCase.invoke()
+            }
             binding.tvNotes.text = noteCount
             for (i in noteList) {
                 binding.tvNotes.text = buildString {
@@ -69,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.btnShowCollection.setOnClickListener{
             binding.tvNotes.text = ""
             val collectionCount = "CollectionCount ${collectionDao.getAllCollections().count()}"
@@ -89,7 +105,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnDeleteNote.setOnClickListener{
-            noteDao.deleteAll()
+            lifecycleScope.launch {
+                deleteAllNotesUseCase.invoke()
+            }
+
         }
         binding.btnDeleteCollection.setOnClickListener{
             collectionDao.deleteAllCollections()
