@@ -21,6 +21,7 @@ import com.example.domain.usecase.CreateNoteUseCase
 import com.example.domain.usecase.DeleteAllNotes
 import com.example.domain.usecase.DeleteCollectionUseCase
 import com.example.domain.usecase.GetAllNotesUseCase
+import com.example.domain.usecase.ViewCollectionsUseCase
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.sql.Date
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         val createNoteUseCase = CreateNoteUseCase(NoteRepositoryImpl(noteDao))
         val createCollectionUseCase = CreateCollectionUseCase(CollectionRepositoryImpl(collectionDao))
         val showNoteUseCase = GetAllNotesUseCase(NoteRepositoryImpl(noteDao))
+        val showAllCollections = ViewCollectionsUseCase(CollectionRepositoryImpl(collectionDao))
         val deleteAllNotesUseCase = DeleteAllNotes(NoteRepositoryImpl(noteDao))
         val deleteAllCollectionUseCase = DeleteCollectionUseCase(CollectionRepositoryImpl(collectionDao), NoteRepositoryImpl(noteDao), ConnectionRepositoryImpl(connectionDao))
 
@@ -90,8 +92,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnShowCollection.setOnClickListener{
             binding.tvNotes.text = ""
-            val collectionCount = "CollectionCount ${collectionDao.getAllCollections().count()}"
-            val collectionList = collectionDao.getAllCollections()
+            var collectionCount = ""
+            var collectionList: List<Collection> = listOf()
+            lifecycleScope.launch {
+                collectionList = showAllCollections.invoke()
+                collectionCount = "CollectionCount ${collectionList.count()}"
+            }
+
+
             binding.tvNotes.text = collectionCount
             for (i in collectionList) {
                 binding.tvNotes.text = buildString {
