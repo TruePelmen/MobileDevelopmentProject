@@ -8,9 +8,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.data.dao.CollectionDao
 import com.example.data.MyDatabase
+import com.example.data.dao.ConnectionDao
 import com.example.data.dao.NoteDAO
 import com.example.smartnotetaker.databinding.ActivityMainBinding
 import com.example.data.repositoryimplementation.CollectionRepositoryImpl
+import com.example.data.repositoryimplementation.ConnectionRepositoryImpl
 import com.example.data.repositoryimplementation.NoteRepositoryImpl
 import com.example.domain.models.Note
 import com.example.domain.models.Collection
@@ -37,12 +39,13 @@ class MainActivity : AppCompatActivity() {
 
         val noteDao: NoteDAO = db.noteDao()
         val collectionDao: CollectionDao = db.collectionDao()
+        val connectionDao: ConnectionDao = db.connectionDao()
 
         val createNoteUseCase = CreateNoteUseCase(NoteRepositoryImpl(noteDao))
         val createCollectionUseCase = CreateCollectionUseCase(CollectionRepositoryImpl(collectionDao))
         val showNoteUseCase = GetAllNotesUseCase(NoteRepositoryImpl(noteDao))
         val deleteAllNotesUseCase = DeleteAllNotes(NoteRepositoryImpl(noteDao))
-        val deleteAllCollectionUseCase = DeleteCollectionUseCase(CollectionRepositoryImpl(collectionDao))
+        val deleteAllCollectionUseCase = DeleteCollectionUseCase(CollectionRepositoryImpl(collectionDao), NoteRepositoryImpl(noteDao), ConnectionRepositoryImpl(connectionDao))
 
 
         binding.btnSaveNote.setOnClickListener{
