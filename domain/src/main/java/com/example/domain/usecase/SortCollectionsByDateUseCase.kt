@@ -3,7 +3,7 @@ package com.example.domain.usecase
 import com.example.domain.models.Collection
 import com.example.domain.repository.CollectionRepository
 
-class SortCollectionsByDate(private val collectionRepository: CollectionRepository) {
+class SortCollectionsByDateUseCase(private val collectionRepository: CollectionRepository) {
 
     suspend operator fun invoke(): List<Collection> {
         val collections = collectionRepository.getAllCollections()
