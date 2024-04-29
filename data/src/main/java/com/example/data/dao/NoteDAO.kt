@@ -4,12 +4,17 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.data.entities.NoteEntity
+
 
 @Dao
 interface NoteDAO {
     @Insert
     fun insert (noteEntity: NoteEntity);
+
+    @Update
+    fun update(noteEntity: NoteEntity)
     @Query("SELECT * FROM note")
     fun getAll(): List<NoteEntity>
     @Delete
