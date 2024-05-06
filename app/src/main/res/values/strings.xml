@@ -11,4 +11,5 @@
     <string name="etNote_collection">Note Collection</string>
     <string name="etCollectionName">Collection Name</string>
     <string name="btnSave_collection">Save Collection</string>
+    <string name="title_activity_main_compose">MainActivityCompose</string>
 </resources>
