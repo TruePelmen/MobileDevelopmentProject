@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.smartnotetaker.ui.theme.SmartNoteTakerTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +24,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +43,7 @@ import com.example.domain.usecase.GetAllNotesUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class MainActivityCompose : ComponentActivity() {
@@ -83,9 +86,11 @@ fun GreetingPreview() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, db: MyDatabase) {
+    val scope = rememberCoroutineScope()
     var noteName by remember { mutableStateOf("") }
     var noteText by remember { mutableStateOf("") }
     var noteCollection by remember { mutableStateOf("") }
+    var collectionName by remember { mutableStateOf("") }
 
     val noteDao: NoteDAO = db.noteDao()
     val collectionDao: CollectionDao = db.collectionDao()
@@ -98,16 +103,10 @@ fun MainScreen(modifier: Modifier = Modifier, db: MyDatabase) {
     val deleteAllNotesUseCase = DeleteAllNotes(NoteRepositoryImpl(noteDao))
 
 
-    var noteList by remember { mutableStateOf<List<Note>>(emptyList()) }
-
-    // Launch coroutine in LaunchedEffect for proper lifecycle handling
-    LaunchedEffect(Unit) { // Unit passed as a key to trigger launch on initial composition
-        val notes = showNoteUseCase.invoke()
-        noteList = notes // Update the state with the fetched notes
-    }
+    var noteList by remember { mutableStateOf<List<Note>>(listOf()) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Column( Modifier.weight(1f)) { // Create two sections with weights
+        Column(Modifier.weight(1f)) { // Create two sections with weights
             OutlinedTextField(
                 value = noteName,
                 onValueChange = { noteName = it },
@@ -124,38 +123,60 @@ fun MainScreen(modifier: Modifier = Modifier, db: MyDatabase) {
                 label = { Text("Collection ID") }
             )
             Row(modifier = modifier) {
-                Button(onClick = { /* Call createNoteUseCase  */ }) {
+                Button(onClick = {
+                    scope.launch {
+                        createNoteUseCase(
+                            Note(
+                                name = noteName,
+                                text = noteText,
+                                collectionId = noteCollection.toLong()
+                            )
+                        )
+                    }
+                }) {
                     Text("Save Note")
                 }
-                Button(onClick = { /* Call createCollectionUseCase */ }) {
-                    Text("Save Collection")
+                Button(onClick = {
+                    scope.launch {
+                        deleteAllNotesUseCase()
+                    }
+                }) {
+                    Text("Delete Notes")
                 }
             }
         }
-        Button(onClick = { }) {
+        Button(onClick = {
+            scope.launch {
+                noteList = showNoteUseCase() // Оновлюємо список нотаток
+            }
+        }) {
             Text("Show all notes")
         }
         Text(text = "Your Notes") // Display note or collection information here
+        LazyColumn {
+            items(noteList) { note ->
+                Text(text = "Title: ${note.name}")
+                Text(text = "Description: ${note.text}")
+                Divider(modifier = Modifier.padding(vertical = 8.dp))
+            }
+        }
         Column(Modifier.weight(1f)) { // Create two sections with weights
             OutlinedTextField(
-                value = noteName,
-                onValueChange = { noteName = it },
-                label = { Text("Note Name") }
+                value = collectionName,
+                onValueChange = { collectionName = it },
+                label = { Text("Collection Name") }
             )
             Row(modifier = modifier) {
-                Button(onClick = { /* Call createNoteUseCase  */ }) {
-                    Text("Save Note")
+                Button(onClick = { }) {
+                    Text("Delete all collections")
                 }
-                Button(onClick = { /* Call createCollectionUseCase */ }) {
+                Button(onClick = { }) {
                     Text("Save Collection")
                 }
             }
         }
         Button(onClick = { }) {
-            Text("Show all notes")
+            Text("Show all collections")
         }
-        Text(text = "Notes: ${noteList.joinToString { it.name }}")
-
     }
 }
-
