@@ -83,4 +83,17 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.0")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+
+
+    val koin_version = "3.5.3"
+    implementation("io.insert-koin:koin-android:$koin_version")
+    implementation("io.insert-koin:koin-core")
+    // Koin Test features
+    testImplementation("io.insert-koin:koin-test:$koin_version")
+    // Koin for JUnit 4
+    testImplementation("io.insert-koin:koin-test-junit4:$koin_version")
+    // Koin for JUnit 5
+    testImplementation("io.insert-koin:koin-test-junit5:$koin_version")
+
 }
