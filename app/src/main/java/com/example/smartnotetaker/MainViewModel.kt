@@ -1,5 +1,6 @@
 package com.example.smartnotetaker
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.Collection
@@ -9,9 +10,6 @@ import com.example.domain.usecase.EditCollectionUseCase
 import com.example.domain.usecase.ViewCollectionUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -21,13 +19,19 @@ class MainViewModel(
     private val viewCollectionsUseCase: ViewCollectionsUseCase,
     private val viewCollectionUseCase: ViewCollectionUseCase
 ) : ViewModel() {
-    private val _collectionsUiState = MutableStateFlow(CollectionsUiState())
-    var collectionsUiState: StateFlow<CollectionsUiState> = _collectionsUiState.asStateFlow()
+    private var collectionsUiState = mutableStateOf(CollectionsUiState())
 
+    init {
+        loadCollections()
+    }
     // Додати нову колекцію
-    fun addCollection(collection: Collection) {
+    fun addCollection(collectionName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            createCollectionUseCase(collection)
+            val newCollection = Collection(name = collectionName)
+            createCollectionUseCase(newCollection)
+            collectionsUiState.value.collections=getCollections()
+            // Update UI state after successful creation
+            loadCollections()
         }
     }
 
@@ -53,30 +57,8 @@ class MainViewModel(
     // Отримати список колекцій з бази даних
     fun loadCollections() {
         viewModelScope.launch(Dispatchers.IO) {
-            collectionsUiState.value.collections.clear()
-            collectionsUiState.value.collections.addAll(viewCollectionsUseCase())
+            collectionsUiState.value.collections= viewCollectionsUseCase()
         }
     }
-    // Define ViewModel factory in a companion object
-//    companion object {
-//
-//        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-//            @Suppress("UNCHECKED_CAST")
-//            override fun <T : ViewModel> create(
-//                modelClass: Class<T>,
-//                extras: CreationExtras
-//            ): T {
-//                // Get the Application object from extras
-//                val application = checkNotNull(extras[APPLICATION_KEY])
-//                // Create a SavedStateHandle for this ViewModel from extras
-//                val savedStateHandle = extras.createSavedStateHandle()
-//
-//                return MainViewModel(
-//                    (application as MyApplication).myRepository,
-//                    savedStateHandle
-//                ) as T
-//            }
-//        }
-//    }
 }
 
