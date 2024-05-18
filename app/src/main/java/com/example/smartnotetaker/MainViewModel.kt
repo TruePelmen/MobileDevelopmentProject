@@ -29,7 +29,7 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val newCollection = Collection(name = collectionName)
             createCollectionUseCase(newCollection)
-            collectionsUiState.value.collections=getCollections()
+            collectionsUiState.value.collections = getCollections()
             // Update UI state after successful creation
             loadCollections()
         }
@@ -44,6 +44,7 @@ class MainViewModel(
     fun deleteCollection(collection: Collection) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteCollectionUseCase(collection)
+            loadCollections() // Оновити список після видалення
         }
     }
 
@@ -51,13 +52,15 @@ class MainViewModel(
     fun editCollection(collection: Collection) {
         viewModelScope.launch(Dispatchers.IO) {
             editCollectionUseCase(collection)
+            loadCollections() // Оновити список після редагування
         }
     }
 
     // Отримати список колекцій з бази даних
     fun loadCollections() {
         viewModelScope.launch(Dispatchers.IO) {
-            collectionsUiState.value.collections= viewCollectionsUseCase()
+            val collections = viewCollectionsUseCase()
+            collectionsUiState.value = collectionsUiState.value.copy(collections = collections)
         }
     }
 
