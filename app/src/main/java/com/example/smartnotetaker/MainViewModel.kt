@@ -60,5 +60,12 @@ class MainViewModel(
             collectionsUiState.value.collections= viewCollectionsUseCase()
         }
     }
+
+    // Отримати колекцію за ID
+    fun getCollectionById(collectionId: String): Collection? {
+        return collectionsUiState.value.collections.find { it.id.toString() == collectionId }
+    }
+
+
 }
 

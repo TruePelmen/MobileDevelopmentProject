@@ -6,24 +6,41 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -67,6 +84,10 @@ class MainActivityCompose : ComponentActivity() {
                         composable("AddCollection") {
                             AddCollectionScreen(navController = navController, viewModel = viewModel)
                         }
+                        composable("EditCollection/{collectionId}") { backStackEntry ->
+                            val collectionId = backStackEntry.arguments?.getString("collectionId") ?: return@composable
+                            EditCollectionScreen(collectionId, navController, viewModel)
+                        }
                     }
                 }
             }
@@ -82,7 +103,13 @@ fun CollectionsScreen(
 ) {
     val collections = viewModel.getCollections()
     Column(modifier = modifier) {
-        Text(text = "Collections", style = MaterialTheme.typography.headlineLarge)
+        Row{
+            Text(text = "Collections", style = MaterialTheme.typography.headlineLarge)
+            IconButton(onClick = { navController.navigate("AddCollection") }) {
+                Icon(Icons.Filled.Add, contentDescription = "Add new collection")
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
         if (collections.isEmpty()) {
             Text(text = "No collections yet.", style = MaterialTheme.typography.bodyMedium)
@@ -91,7 +118,13 @@ fun CollectionsScreen(
                 items(collections) { collection ->
                     CollectionItem(collection, onCollectionClicked = {
                         // Handle collection click event (e.g., navigate to edit screen)
-                    })
+                    }, onEditClicked = {
+                        navController.navigate("EditCollection/${collection.id}")
+                    },
+                        onDeleteClicked = {
+                            navController.navigate("EditCollection/${collection.id}")
+                        }
+                    )
                 }
             }
         }
@@ -107,19 +140,31 @@ fun CollectionsScreen(
 @Composable
 fun CollectionItem(
     collection: Collection,
-    onCollectionClicked: (Collection) -> Unit
+    onCollectionClicked: (Collection) -> Unit,
+    onEditClicked: () -> Unit,
+    onDeleteClicked: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        onClick = { onCollectionClicked(collection) }
+            .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
-        Surface(modifier = Modifier.padding(16.dp)) {
-            Text(text = collection.name, style = MaterialTheme.typography.bodyMedium)
+        Surface(modifier = Modifier.padding(8.dp), color = Color.Transparent) {
+            Row(modifier = Modifier.fillMaxSize()
+                .padding(16.dp)) {
+                Text(text = collection.name, style = MaterialTheme.typography.bodyMedium, )
+                Spacer(modifier = Modifier.height(8.dp))
+                IconButton(onClick = { onEditClicked()}) {
+                    Icon(Icons.Filled.Edit, contentDescription = "Add new collection")
+                }
+                IconButton(onClick = { onDeleteClicked()}) {
+                    Icon(Icons.Filled.Delete, contentDescription = "Add new collection")
+                }
+           }
         }
     }
 }
+
 
 @Composable
 fun AddCollectionScreen(
@@ -127,20 +172,75 @@ fun AddCollectionScreen(
     viewModel: MainViewModel
 ) {
     Log.d("Navigation", "AddCollectionScreen has started")
-    var collectionName = ""
+
+    var collectionName by remember { mutableStateOf("") }
+
     Column(modifier = Modifier.padding(16.dp)) {
         TextField(
             value = collectionName,
-            onValueChange = { collectionName = it },
+            onValueChange = { newName -> collectionName = newName },
             label = { Text("Collection Name") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            viewModel.addCollection(collectionName)
-            navController.popBackStack()
+            if (collectionName.isNotBlank()) {
+                viewModel.addCollection(collectionName)
+                navController.popBackStack()
+            }
         }) {
             Text(text = "Create Collection")
+        }
+    }
+}
+
+@Composable
+fun EditCollectionScreen(
+    collectionId: String,
+    navController: NavController,
+    viewModel: MainViewModel
+) {
+    val collection = viewModel.getCollectionById(collectionId)
+    var collectionName by remember { mutableStateOf(collection?.name ?: "") }
+
+    Column(modifier = Modifier.padding(16.dp)) {
+        TextField(
+            value = collectionName,
+            onValueChange = { newName -> collectionName = newName },
+            label = { Text("Collection Name") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            if (collection != null) {
+                collection.name = collectionName
+                viewModel.editCollection(collection)
+                navController.popBackStack()
+            }
+        }) {
+            Text(text = "Save Changes")
+        }
+    }
+}
+
+
+@Composable
+fun MinimalDialog(onDismissRequest: () -> Unit) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Text(
+                text = "Do you really want to delete this collection?",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
