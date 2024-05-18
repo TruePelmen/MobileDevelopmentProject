@@ -45,31 +45,29 @@ class MainActivityCompose : ComponentActivity() {
             // Вказати список модулів для ініціалізації
             modules(domainModule, dataModule, appModule)
         }
-//        val db = Room.databaseBuilder(
-//            this,
-//            MyDatabase::class.java, "database-name"
-//        ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
         // Отримайте ViewModel з Koin
         val viewModel: MainViewModel = get<MainViewModel>()
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "Collections") {
-                // Your Composable functions for different screens here
-                composable("Collections",){
-                    CollectionsScreen(viewModel, modifier = Modifier.fillMaxSize(), navController = navController)
-                }
-                composable("AddCollection",){
-                    AddCollectionScreen(navController, viewModel)
-                }
-            }
             SmartNoteTakerTheme {
                 Scaffold(modifier = Modifier.padding(0.dp)) { innerPadding ->
-                    CollectionsScreen(
-                        viewModel = viewModel,
-                        modifier = Modifier.padding(innerPadding),
-                        navController = navController
-                    )
+                    NavHost(
+                        navController = navController,
+                        startDestination = "Collections",
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable("Collections") {
+                            CollectionsScreen(
+                                viewModel = viewModel,
+                                navController = navController,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                        composable("AddCollection") {
+                            AddCollectionScreen(navController = navController, viewModel = viewModel)
+                        }
+                    }
                 }
             }
         }
@@ -93,21 +91,17 @@ fun CollectionsScreen(
                 items(collections) { collection ->
                     CollectionItem(collection, onCollectionClicked = {
                         // Handle collection click event (e.g., navigate to edit screen)
-
                     })
                 }
             }
         }
         Button(onClick = {
-            //navController.navigate("AddCollection")
-            viewModel.addCollection("Collection1")
+            navController.navigate("AddCollection")
         }) {
             Text(text = "Add a new collection")
         }
     }
 }
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,7 +120,6 @@ fun CollectionItem(
         }
     }
 }
-
 
 @Composable
 fun AddCollectionScreen(
@@ -151,5 +144,3 @@ fun AddCollectionScreen(
         }
     }
 }
-
-
