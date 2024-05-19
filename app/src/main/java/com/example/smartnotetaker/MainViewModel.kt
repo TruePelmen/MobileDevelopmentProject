@@ -4,9 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.Collection
+import com.example.domain.models.Note
 import com.example.domain.usecase.CreateCollectionUseCase
+import com.example.domain.usecase.CreateNoteUseCase
 import com.example.domain.usecase.DeleteCollectionUseCase
 import com.example.domain.usecase.EditCollectionUseCase
+import com.example.domain.usecase.GetAllNotesUseCase
 import com.example.domain.usecase.ViewCollectionUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +20,12 @@ class MainViewModel(
     private val deleteCollectionUseCase: DeleteCollectionUseCase,
     private val editCollectionUseCase: EditCollectionUseCase,
     private val viewCollectionsUseCase: ViewCollectionsUseCase,
-    private val viewCollectionUseCase: ViewCollectionUseCase
+    private val viewCollectionUseCase: ViewCollectionUseCase,
+    private val getAllNotesUseCase: GetAllNotesUseCase,
+    private val createNoteUseCase: CreateNoteUseCase
 ) : ViewModel() {
     private var collectionsUiState = mutableStateOf(CollectionsUiState())
+    private var notesUiState = mutableStateOf(NotesUiState())
 
     init {
         loadCollections()
@@ -69,6 +75,23 @@ class MainViewModel(
         return collectionsUiState.value.collections.find { it.id.toString() == collectionId }
     }
 
+    fun getNotesForCollection(collectionId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val notes = getAllNotesUseCase().filter { it.collectionId.toString() == collectionId }
+            notesUiState.value.notes = notes
+        }
+    }
 
+    fun getNotesUiState(): List<Note> {
+        return notesUiState.value.notes
+    }
+
+    fun addNote(note: Note, collectionId: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            createNoteUseCase.invoke(note)
+            val notes = getAllNotesUseCase().filter { it.collectionId.toString() == collectionId }
+            notesUiState.value.notes = notes
+        }
+    }
 }
 
