@@ -1,5 +1,6 @@
-package com.example.smartnotetaker.components
+package com.example.smartnotetaker.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,18 @@ import androidx.compose.ui.unit.dp
 import com.example.domain.models.Note
 
 @Composable
-fun NoteItem(note: Note) {
-    Card(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+fun NoteCard(
+    note: Note,
+    onEditNoteClick: () -> Unit,
+    onUndoDeleteClick: () -> Unit
+) {
+    // Example card implementation
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onEditNoteClick() }
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = note.name, style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(8.dp))

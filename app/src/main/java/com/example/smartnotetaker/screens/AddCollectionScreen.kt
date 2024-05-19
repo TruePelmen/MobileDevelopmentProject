@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.components
+package com.example.smartnotetaker.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,13 +19,11 @@ import androidx.navigation.NavController
 import com.example.smartnotetaker.MainViewModel
 
 @Composable
-fun EditCollectionScreen(
-    collectionId: String,
+fun AddCollectionScreen(
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    val collection = viewModel.getCollectionById(collectionId)
-    var collectionName by remember { mutableStateOf(collection?.name ?: "") }
+    var collectionName by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
         TextField(
@@ -36,13 +34,12 @@ fun EditCollectionScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            if (collection != null) {
-                collection.name = collectionName
-                viewModel.editCollection(collection)
+            if (collectionName.isNotBlank()) {
+                viewModel.addCollection(collectionName)
                 navController.popBackStack()
             }
         }) {
-            Text(text = "Save Changes")
+            Text(text = "Create Collection")
         }
     }
 }

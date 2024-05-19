@@ -1,5 +1,6 @@
-package com.example.smartnotetaker.components
+package com.example.smartnotetaker.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,30 +17,42 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.domain.models.Note
 import com.example.smartnotetaker.MainViewModel
 
 @Composable
-fun AddCollectionScreen(
+fun AddNoteScreen(
+    collectionId: Long,
     navController: NavController,
     viewModel: MainViewModel
 ) {
-    var collectionName by remember { mutableStateOf("") }
+    Log.d("Navigation", "AddCollectionScreen has started")
 
+    var noteName by remember { mutableStateOf("") }
+    var noteText by remember { mutableStateOf("") }
     Column(modifier = Modifier.padding(16.dp)) {
         TextField(
-            value = collectionName,
-            onValueChange = { newName -> collectionName = newName },
-            label = { Text("Collection Name") },
+            maxLines = 1,
+            value = noteName,
+            onValueChange = { newName -> noteName = newName },
+            label = { Text("Note Name") },
             modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+        TextField(
+            value = noteText,
+            onValueChange = { newText -> noteText = newText },
+            label = { Text("Note Text") },
+            modifier = Modifier.fillMaxWidth()
+        )
         Button(onClick = {
-            if (collectionName.isNotBlank()) {
-                viewModel.addCollection(collectionName)
+            if (noteName.isNotBlank()) {
+                val note = Note(name = noteName, text = noteText, collectionId = collectionId)
+                viewModel.addNote(note, collectionId.toString())
                 navController.popBackStack()
             }
         }) {
-            Text(text = "Create Collection")
+            Text(text = "Create Note")
         }
     }
 }

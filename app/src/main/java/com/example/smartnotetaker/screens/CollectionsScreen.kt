@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.components
+package com.example.smartnotetaker.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

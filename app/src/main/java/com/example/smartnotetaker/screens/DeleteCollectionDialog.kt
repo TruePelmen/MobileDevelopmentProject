@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.components
+package com.example.smartnotetaker.screens
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
