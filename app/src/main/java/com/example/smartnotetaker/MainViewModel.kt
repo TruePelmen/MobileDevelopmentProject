@@ -10,7 +10,7 @@ import com.example.domain.usecase.CreateNoteUseCase
 import com.example.domain.usecase.DeleteCollectionUseCase
 import com.example.domain.usecase.EditCollectionUseCase
 import com.example.domain.usecase.GetAllNotesUseCase
-import com.example.domain.usecase.ViewCollectionUseCase
+import com.example.domain.usecase.GetNoteByIdUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,13 +20,15 @@ class MainViewModel(
     private val deleteCollectionUseCase: DeleteCollectionUseCase,
     private val editCollectionUseCase: EditCollectionUseCase,
     private val viewCollectionsUseCase: ViewCollectionsUseCase,
-    private val viewCollectionUseCase: ViewCollectionUseCase,
+    private val viewNoteUseCase: GetNoteByIdUseCase,
     private val getAllNotesUseCase: GetAllNotesUseCase,
     private val createNoteUseCase: CreateNoteUseCase
 ) : ViewModel() {
     private var collectionsUiState = mutableStateOf(CollectionsUiState())
     private var notesUiState = mutableStateOf(NotesUiState())
 
+    private val _noteState = mutableStateOf<Note?>(null)
+    val noteState = _noteState
     init {
         loadCollections()
     }
@@ -91,6 +93,13 @@ class MainViewModel(
             createNoteUseCase.invoke(note)
             val notes = getAllNotesUseCase().filter { it.collectionId.toString() == collectionId }
             notesUiState.value.notes = notes
+        }
+    }
+
+    fun getNoteById(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val note = viewNoteUseCase.invoke(id)
+            _noteState.value = note
         }
     }
 }

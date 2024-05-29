@@ -25,7 +25,9 @@ fun NoteCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable {}
+            .clickable {
+                navController.navigate("ShowNote/${note.id}")
+            }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = note.name, style = MaterialTheme.typography.titleLarge)

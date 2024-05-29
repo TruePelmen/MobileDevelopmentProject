@@ -14,6 +14,7 @@ import com.example.smartnotetaker.screens.AddNoteScreen
 import com.example.smartnotetaker.screens.CollectionsScreen
 import com.example.smartnotetaker.screens.DeleteCollectionDialog
 import com.example.smartnotetaker.screens.EditCollectionScreen
+import com.example.smartnotetaker.screens.NoteScreen
 import com.example.smartnotetaker.screens.NotesScreen
 
 @Composable
@@ -58,6 +59,11 @@ fun AppNavigation(viewModel: MainViewModel) {
         composable("AddNote/{collectionId}"){backStackEntry ->
             val collectionId = backStackEntry.arguments?.getString("collectionId") ?: return@composable
             AddNoteScreen(collectionId.toLong(), navController, viewModel)
+        }
+        composable("ShowNote/{noteId}"){
+            backStackEntry ->
+            val noteId = backStackEntry.arguments?.getString("noteId") ?: return@composable
+            NoteScreen(noteId.toLong(), navController, viewModel)
         }
     }
 }
