@@ -2,11 +2,16 @@ package com.example.smartnotetaker.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,10 +34,16 @@ fun NoteCard(
                 navController.navigate("ShowNote/${note.id}")
             }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = note.name, style = MaterialTheme.typography.titleLarge)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = note.text, style = MaterialTheme.typography.bodyMedium)
+        Row{
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = note.name, style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = note.text, style = MaterialTheme.typography.bodyMedium)
+            }
+            IconButton(onClick = { navController.navigate("EditNote/${note.id}")}) {
+                Icon(Icons.Filled.Edit, contentDescription = "Edit this collection")
+            }
         }
+
     }
 }

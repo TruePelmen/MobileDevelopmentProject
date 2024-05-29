@@ -11,6 +11,7 @@ import com.example.domain.usecase.DeleteCollectionUseCase
 import com.example.domain.usecase.EditCollectionUseCase
 import com.example.domain.usecase.GetAllNotesUseCase
 import com.example.domain.usecase.GetNoteByIdUseCase
+import com.example.domain.usecase.UpdateNoteUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +23,8 @@ class MainViewModel(
     private val viewCollectionsUseCase: ViewCollectionsUseCase,
     private val viewNoteUseCase: GetNoteByIdUseCase,
     private val getAllNotesUseCase: GetAllNotesUseCase,
-    private val createNoteUseCase: CreateNoteUseCase
+    private val createNoteUseCase: CreateNoteUseCase,
+    private val updateNoteUseCase: UpdateNoteUseCase
 ) : ViewModel() {
     private var collectionsUiState = mutableStateOf(CollectionsUiState())
     private var notesUiState = mutableStateOf(NotesUiState())
@@ -99,6 +101,13 @@ class MainViewModel(
     fun getNoteById(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val note = viewNoteUseCase.invoke(id)
+            _noteState.value = note
+        }
+    }
+
+    fun updateNote(note: Note) {
+        viewModelScope.launch(Dispatchers.IO) {
+            updateNoteUseCase.invoke(note)
             _noteState.value = note
         }
     }

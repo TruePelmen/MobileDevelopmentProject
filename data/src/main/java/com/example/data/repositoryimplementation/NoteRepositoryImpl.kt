@@ -4,8 +4,6 @@ import com.example.data.dao.NoteDAO
 import com.example.data.entities.NoteEntity
 import com.example.domain.models.Note
 import com.example.domain.repository.NoteRepository
-import java.security.KeyStore.TrustedCertificateEntry
-import kotlin.math.exp
 
 class NoteRepositoryImpl(private val noteDao: NoteDAO) : NoteRepository {
 
@@ -32,6 +30,11 @@ class NoteRepositoryImpl(private val noteDao: NoteDAO) : NoteRepository {
         // Мапуємо з Note на NoteEntity перед видаленням з бази даних
         val noteEntity = note.toEntity()
         noteDao.delete(noteEntity)
+    }
+
+    override suspend fun update(note: Note){
+        val noteEntity = note.toEntity()
+        noteDao.update(noteEntity)
     }
 
     override suspend fun getById(id: Long): Note {
