@@ -17,7 +17,7 @@ import com.example.smartnotetaker.screens.EditCollectionScreen
 import com.example.smartnotetaker.screens.NotesScreen
 
 @Composable
-fun AppNavigation(modifier: Modifier = Modifier, viewModel: MainViewModel) {
+fun AppNavigation(viewModel: MainViewModel) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,

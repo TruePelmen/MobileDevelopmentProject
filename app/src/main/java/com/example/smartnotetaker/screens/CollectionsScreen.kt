@@ -4,15 +4,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -48,7 +50,9 @@ fun CollectionsScreen(
                     )
                 }
             }
-            IconButton(onClick = { navController.navigate("AddCollection") }) {
+            FloatingActionButton(
+                onClick = { navController.navigate("AddCollection") },
+                modifier = Modifier.padding(20.dp).align(Alignment.End)) {
                 Icon(Icons.Filled.AddCircle, contentDescription = "Add new collection")
             }
         }

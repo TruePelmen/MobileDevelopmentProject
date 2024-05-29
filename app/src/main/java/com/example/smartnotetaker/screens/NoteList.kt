@@ -8,13 +8,13 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.domain.models.Note
 
 @Composable
 fun NoteList(
     notes: List<Note>,
-    onEditNoteClick: (Long) -> Unit,
-    onUndoDeleteClick: () -> Unit
+    navController: NavController
 ) {
     LazyVerticalStaggeredGrid(
         modifier = Modifier.fillMaxSize(),
@@ -25,8 +25,7 @@ fun NoteList(
         items(notes) { note ->
             NoteCard(
                 note = note,
-                onEditNoteClick = { onEditNoteClick(note.id) },
-                onUndoDeleteClick = { onUndoDeleteClick() }
+                navController
             )
         }
     }

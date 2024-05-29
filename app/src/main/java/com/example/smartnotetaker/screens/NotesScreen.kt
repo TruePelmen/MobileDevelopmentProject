@@ -1,17 +1,20 @@
 package com.example.smartnotetaker.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -28,29 +31,26 @@ fun NotesScreen(
     }
     val notes = viewModel.getNotesUiState()
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = "Notes", style = MaterialTheme.typography.headlineLarge)
-        Spacer(modifier = Modifier.height(16.dp))
-        if (notes.isEmpty()) {
-            Text(text = "No notes in this collection.", style = MaterialTheme.typography.bodyMedium)
-        } else {
-            NoteList(
-                notes = notes,
-                onEditNoteClick = { noteId ->
-                    // Navigate to edit note screen
-                    navController.navigate("EditNote/$noteId")
-                },
-                onUndoDeleteClick = {
-                    // Handle undo delete action
-                }
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.padding(16.dp).fillMaxSize()) {
+            Text(text = "Notes", style = MaterialTheme.typography.headlineLarge)
+            Spacer(modifier = Modifier.height(16.dp))
+            if (notes.isEmpty()) {
+                Text(text = "No notes in this collection.", style = MaterialTheme.typography.bodyMedium)
+            } else {
+                NoteList(
+                    notes = notes,
+                    navController
+                )
+            }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        IconButton(onClick = { navController.navigate("AddNote/$collectionId") },
-            modifier = Modifier.height(16.dp)) {
+        FloatingActionButton(
+            onClick = { navController.navigate("AddNote/$collectionId") },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
             Icon(Icons.Filled.AddCircle, contentDescription = "Add new note")
         }
     }
-
-
 }
