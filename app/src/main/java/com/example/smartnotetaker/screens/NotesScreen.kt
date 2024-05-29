@@ -46,8 +46,11 @@ fun NotesScreen(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        IconButton(onClick = { navController.navigate("AddNote/$collectionId") }) {
+        IconButton(onClick = { navController.navigate("AddNote/$collectionId") },
+            modifier = Modifier.height(16.dp)) {
             Icon(Icons.Filled.AddCircle, contentDescription = "Add new note")
         }
     }
+
+
 }
