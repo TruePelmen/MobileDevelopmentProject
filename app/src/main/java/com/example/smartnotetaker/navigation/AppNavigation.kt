@@ -67,7 +67,7 @@ fun AppNavigation(viewModel: MainViewModel) {
             NoteScreen(noteId.toLong(), navController, viewModel)
         }
         composable("EditNote/{noteId}") { backStackEntry ->
-            val noteId = backStackEntry.arguments?.getString("noteId")?.toLongOrNull()
+            val noteId = backStackEntry.arguments?.getString("noteId")?.toLong()
             noteId?.let {
                 EditNoteScreen(id = it, navController = navController, viewModel = viewModel)
             }

@@ -15,6 +15,7 @@ import com.example.domain.usecase.GetNoteGraphUseCase
 import com.example.domain.usecase.SearchNotesByNameUseCase
 import com.example.domain.usecase.SortCollectionsByDateUseCase
 import com.example.domain.usecase.SortCollectionsByNameUseCase
+import com.example.domain.usecase.UpdateNoteUseCase
 import com.example.domain.usecase.ViewCollectionUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import org.koin.dsl.module
@@ -78,5 +79,9 @@ val domainModule = module{
 
     factory <ViewCollectionUseCase> {
         ViewCollectionUseCase(get())
+    }
+
+    factory <UpdateNoteUseCase> {
+        UpdateNoteUseCase(get())
     }
 }
