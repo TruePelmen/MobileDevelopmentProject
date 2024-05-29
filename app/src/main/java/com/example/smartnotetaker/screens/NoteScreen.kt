@@ -13,6 +13,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -39,6 +44,7 @@ fun NoteScreen(
     }
 
     val note by viewModel.noteState
+    var showDialog by remember { mutableStateOf(false) }
 
     if (note != null) {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -65,10 +71,10 @@ fun NoteScreen(
                     text = creationDate,
                     style = MaterialTheme.typography.bodyMedium
                 )
-                IconButton(onClick = { navController.navigate("EditNote/${id}")}) {
+                IconButton(onClick = { navController.navigate("EditNote/${id}") }) {
                     Icon(Icons.Filled.Edit, contentDescription = "Edit this note")
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { showDialog = true }) {
                     Icon(Icons.Filled.Delete, contentDescription = "Delete this note")
                 }
             }
@@ -78,8 +84,37 @@ fun NoteScreen(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = {
+                    Text(text = "Delete Note")
+                },
+                text = {
+                    Text("Are you sure you want to delete this note?")
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.deleteNoteById(note!!.id)
+                            showDialog = false
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Text("Delete")
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { showDialog = false }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
     } else {
-        // Можна додати індикатор завантаження або повідомлення про відсутність нотатки
         Text("Loading...", modifier = Modifier.padding(16.dp))
     }
 }

@@ -8,6 +8,7 @@ import com.example.domain.models.Note
 import com.example.domain.usecase.CreateCollectionUseCase
 import com.example.domain.usecase.CreateNoteUseCase
 import com.example.domain.usecase.DeleteCollectionUseCase
+import com.example.domain.usecase.DeleteNoteUseCase
 import com.example.domain.usecase.EditCollectionUseCase
 import com.example.domain.usecase.GetAllNotesUseCase
 import com.example.domain.usecase.GetNoteByIdUseCase
@@ -24,7 +25,8 @@ class MainViewModel(
     private val viewNoteUseCase: GetNoteByIdUseCase,
     private val getAllNotesUseCase: GetAllNotesUseCase,
     private val createNoteUseCase: CreateNoteUseCase,
-    private val updateNoteUseCase: UpdateNoteUseCase
+    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
     private var collectionsUiState = mutableStateOf(CollectionsUiState())
     private var notesUiState = mutableStateOf(NotesUiState())
@@ -109,6 +111,13 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             updateNoteUseCase.invoke(note)
             _noteState.value = note
+        }
+    }
+
+    fun deleteNoteById(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteNoteUseCase.execute(viewNoteUseCase.invoke(id))
+            _noteState.value = null // Очищення стану після видалення
         }
     }
 }
