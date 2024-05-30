@@ -1,5 +1,6 @@
 package com.example.smartnotetaker.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,12 +27,16 @@ fun CollectionItem(
     collection: Collection,
     onCollectionClicked: (Collection) -> Unit,
     onEditClicked: () -> Unit,
-    onDeleteClicked: () -> Unit
+    onDeleteClicked: () -> Unit,
+    onItemClicked: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp)
+            .clickable {
+                onItemClicked()
+            }
     ) {
         Surface(modifier = Modifier.padding(8.dp), color = Color.Transparent) {
             Row(modifier = Modifier
@@ -40,9 +44,6 @@ fun CollectionItem(
                 .padding(16.dp)) {
                 Text(text = collection.name, style = MaterialTheme.typography.bodyMedium, )
                 Spacer(modifier = Modifier.height(8.dp))
-                IconButton(onClick = { onCollectionClicked(collection)}) {
-                    Icon(Icons.Filled.List, contentDescription = "View notes from this collection")
-                }
                 IconButton(onClick = { onEditClicked()}) {
                     Icon(Icons.Filled.Edit, contentDescription = "Edit this collection")
                 }

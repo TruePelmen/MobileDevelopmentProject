@@ -46,6 +46,9 @@ fun CollectionsScreen(
                     },
                         onDeleteClicked = {
                             navController.navigate("DeleteCollectionDialog/${collection.id}")
+                        },
+                        onItemClicked = {
+                            navController.navigate("Notes/${collection.id}")
                         }
                     )
                 }
