@@ -14,6 +14,8 @@ import com.example.domain.usecase.GetAllNotesUseCase
 import com.example.domain.usecase.GetNoteByIdUseCase
 import com.example.domain.usecase.UpdateNoteUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
+import com.example.smartnotetaker.uistates.CollectionsUiState
+import com.example.smartnotetaker.uistates.NotesUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -116,7 +118,7 @@ class MainViewModel(
     fun deleteNoteById(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteNoteUseCase.execute(viewNoteUseCase.invoke(id))
-            _noteState.value = null // Очищення стану після видалення
+            _noteState.value = null
         }
     }
 }

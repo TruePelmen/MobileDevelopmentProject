@@ -1,4 +1,4 @@
-package com.example.smartnotetaker
+package com.example.smartnotetaker.uistates
 
 import com.example.domain.models.Note
 
