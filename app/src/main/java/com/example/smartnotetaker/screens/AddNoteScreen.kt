@@ -38,7 +38,7 @@ fun AddNoteScreen(
             value = noteName,
             onValueChange = { newName -> noteName = newName },
             label = { Text("Note Name") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(top = 20.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
         TextField(

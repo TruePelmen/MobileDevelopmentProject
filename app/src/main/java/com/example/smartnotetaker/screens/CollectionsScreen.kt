@@ -30,7 +30,10 @@ fun CollectionsScreen(
     val collections = viewModel.getCollections()
     Column(modifier = modifier.fillMaxSize()) {
         Row{
-            Text(text = "Collections", style = MaterialTheme.typography.headlineLarge)
+            Text(
+                text = "Collections",
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(20.dp))
 
         }
 
