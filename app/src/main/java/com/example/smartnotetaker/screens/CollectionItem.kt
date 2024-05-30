@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -39,15 +40,22 @@ fun CollectionItem(
             }
     ) {
         Surface(modifier = Modifier.padding(8.dp), color = Color.Transparent) {
-            Row(modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)) {
-                Text(text = collection.name, style = MaterialTheme.typography.bodyMedium, )
-                Spacer(modifier = Modifier.height(8.dp))
-                IconButton(onClick = { onEditClicked()}) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically // Для вертикального вирівнювання елементів
+            ) {
+                Text(
+                    text = collection.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f) // Займає весь доступний простір
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                IconButton(onClick = { onEditClicked() }) {
                     Icon(Icons.Filled.Edit, contentDescription = "Edit this collection")
                 }
-                IconButton(onClick = { onDeleteClicked()}) {
+                IconButton(onClick = { onDeleteClicked() }) {
                     Icon(Icons.Filled.Delete, contentDescription = "Delete this collection")
                 }
             }
