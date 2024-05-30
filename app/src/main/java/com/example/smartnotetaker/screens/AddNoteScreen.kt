@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.domain.models.Note
 import com.example.smartnotetaker.MainViewModel
+import java.sql.Date
 
 @Composable
 fun AddNoteScreen(
@@ -30,6 +31,7 @@ fun AddNoteScreen(
 
     var noteName by remember { mutableStateOf("") }
     var noteText by remember { mutableStateOf("") }
+
     Column(modifier = Modifier.padding(16.dp)) {
         TextField(
             maxLines = 1,
@@ -45,9 +47,18 @@ fun AddNoteScreen(
             label = { Text("Note Text") },
             modifier = Modifier.fillMaxWidth()
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             if (noteName.isNotBlank()) {
-                val note = Note(name = noteName, text = noteText, collectionId = collectionId)
+                val currentDate = Date(System.currentTimeMillis())
+                val note = Note(
+                    name = noteName,
+                    text = noteText,
+                    nextRepetition = currentDate,
+                    lastRepetition = currentDate,
+                    creationDate = currentDate,
+                    collectionId = collectionId
+                )
                 viewModel.addNote(note, collectionId.toString())
                 navController.popBackStack()
             }

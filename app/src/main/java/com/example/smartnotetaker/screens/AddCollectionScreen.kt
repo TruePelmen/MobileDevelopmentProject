@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.smartnotetaker.MainViewModel
+import java.sql.Date
+import com.example.domain.models.Collection
 
 @Composable
 fun AddCollectionScreen(
@@ -35,7 +37,12 @@ fun AddCollectionScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
             if (collectionName.isNotBlank()) {
-                viewModel.addCollection(collectionName)
+                val currentDate = Date(System.currentTimeMillis())
+                val collection = Collection(
+                    name = collectionName,
+                    creationDate = currentDate
+                )
+                viewModel.addCollection(collection)
                 navController.popBackStack()
             }
         }) {

@@ -37,10 +37,9 @@ class MainViewModel(
         loadCollections()
     }
     // Додати нову колекцію
-    fun addCollection(collectionName: String) {
+    fun addCollection(collection: Collection) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newCollection = Collection(name = collectionName)
-            createCollectionUseCase(newCollection)
+            createCollectionUseCase(collection)
             collectionsUiState.value.collections = getCollections()
             // Update UI state after successful creation
             loadCollections()
