@@ -22,7 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.smartnotetaker.MainViewModel
-import com.example.smartnotetaker.compoments.AppBottomBar
+import com.example.smartnotetaker.components.AppBottomBar
+
 
 @Composable
 fun NotesScreen(
@@ -37,7 +38,7 @@ fun NotesScreen(
     val collection = viewModel.getCollectionById(collectionId)
 
     Scaffold(
-        bottomBar = { AppBottomBar(navController = navController) }
+        bottomBar = { AppBottomBar(navController = navController, collectionId) }
     ) { innerPadding ->
         Box(modifier = Modifier
             .padding(innerPadding)

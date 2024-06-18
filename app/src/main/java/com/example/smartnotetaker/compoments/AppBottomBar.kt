@@ -1,4 +1,4 @@
-package com.example.smartnotetaker.compoments
+package com.example.smartnotetaker.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -16,22 +16,47 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun AppBottomBar(navController: NavController) {
+fun AppBottomBar(navController: NavController, collectionId: String) {
     BottomAppBar {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly, // Arrange buttons evenly spaced
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { navController.navigate("Collections") }) {
+            val currentRoute = navController.currentBackStackEntry?.destination?.route
+
+            IconButton(onClick = {
+                val targetRoute = "Notes/$collectionId"
+                if (currentRoute != targetRoute) {
+                    navController.navigate(targetRoute) {
+                        // This ensures we do not create multiple copies of the same destination
+                        launchSingleTop = true
+                    }
+                }
+            }) {
                 Icon(Icons.Filled.Home, contentDescription = "Home")
             }
-            IconButton(onClick = { navController.navigate("Search") }) {
-                Icon(Icons.Filled.Search, contentDescription = "Search")
+            IconButton(onClick = {
+                val targetRoute = "Graph/$collectionId"
+                if (currentRoute != targetRoute) {
+                    navController.navigate(targetRoute) {
+                        launchSingleTop = true
+                    }
+                }
+            }) {
+                Icon(Icons.Filled.Search, contentDescription = "Graph")
             }
-            IconButton(onClick = { navController.navigate("Settings") }) {
-                Icon(Icons.Filled.Settings, contentDescription = "Settings")
+            IconButton(onClick = {
+                val targetRoute = "Repetition/$collectionId"
+                if (currentRoute != targetRoute) {
+                    navController.navigate(targetRoute) {
+                        launchSingleTop = true
+                    }
+                }
+            }) {
+                Icon(Icons.Filled.Settings, contentDescription = "Repetition")
             }
         }
     }
 }
+

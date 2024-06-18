@@ -15,8 +15,10 @@ import com.example.smartnotetaker.screens.CollectionsScreen
 import com.example.smartnotetaker.screens.DeleteCollectionDialog
 import com.example.smartnotetaker.screens.EditCollectionScreen
 import com.example.smartnotetaker.screens.EditNoteScreen
+import com.example.smartnotetaker.screens.GraphScreen
 import com.example.smartnotetaker.screens.NoteScreen
 import com.example.smartnotetaker.screens.NotesScreen
+import com.example.smartnotetaker.screens.RepetitionScreen
 
 @Composable
 fun AppNavigation(viewModel: MainViewModel) {
@@ -72,6 +74,13 @@ fun AppNavigation(viewModel: MainViewModel) {
                 EditNoteScreen(id = it, navController = navController, viewModel = viewModel)
             }
         }
-
+        composable("Graph/{collectionId}") {backStackEntry ->
+            val collectionId = backStackEntry.arguments?.getString("collectionId") ?: return@composable
+            GraphScreen(collectionId, navController, viewModel)
+        }
+        composable("Repetition/{collectionId}") {backStackEntry ->
+            val collectionId = backStackEntry.arguments?.getString("collectionId") ?: return@composable
+            RepetitionScreen(collectionId, navController, viewModel)
+        }
     }
 }
