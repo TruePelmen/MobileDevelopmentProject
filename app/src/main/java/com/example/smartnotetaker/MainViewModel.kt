@@ -1,5 +1,6 @@
 package com.example.smartnotetaker
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import com.example.domain.usecase.DeleteNoteUseCase
 import com.example.domain.usecase.EditCollectionUseCase
 import com.example.domain.usecase.GetAllNotesUseCase
 import com.example.domain.usecase.GetNoteByIdUseCase
+import com.example.domain.usecase.GetNoteGraphUseCase
 import com.example.domain.usecase.UpdateNoteUseCase
 import com.example.domain.usecase.ViewCollectionsUseCase
 import com.example.smartnotetaker.uistates.CollectionsUiState
@@ -28,13 +30,18 @@ class MainViewModel(
     private val getAllNotesUseCase: GetAllNotesUseCase,
     private val createNoteUseCase: CreateNoteUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
-    private val deleteNoteUseCase: DeleteNoteUseCase
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val getNoteGraphUseCase: GetNoteGraphUseCase
 ) : ViewModel() {
     private var collectionsUiState = mutableStateOf(CollectionsUiState())
     private var notesUiState = mutableStateOf(NotesUiState())
 
     private val _noteState = mutableStateOf<Note?>(null)
     val noteState = _noteState
+
+    private val _adjacencyMatrix = mutableStateOf<Array<BooleanArray>?>(null)
+    val adjacencyMatrix: State<Array<BooleanArray>?> = _adjacencyMatrix
+
     init {
         loadCollections()
     }
@@ -119,6 +126,13 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             deleteNoteUseCase.execute(viewNoteUseCase.invoke(id))
             _noteState.value = null
+        }
+    }
+
+    fun fetchNoteGraphUseCase(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val matrix = getNoteGraphUseCase.invoke(id)
+            _adjacencyMatrix.value = matrix
         }
     }
 }

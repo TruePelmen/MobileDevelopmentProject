@@ -17,10 +17,8 @@ class MainActivityCompose : ComponentActivity() {
         super.onCreate(savedInstanceState)
         startKoin {
             androidContext(application)
-            // Вказати список модулів для ініціалізації
             modules(domainModule, dataModule, appModule)
         }
-        // Отримайте ViewModel з Koin
         val viewModel: MainViewModel = get<MainViewModel>()
         enableEdgeToEdge()
         setContent {

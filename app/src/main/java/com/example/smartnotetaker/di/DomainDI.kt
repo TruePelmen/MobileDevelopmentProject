@@ -84,4 +84,5 @@ val domainModule = module{
     factory <UpdateNoteUseCase> {
         UpdateNoteUseCase(get())
     }
+
 }
