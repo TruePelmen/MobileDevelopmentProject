@@ -65,11 +65,13 @@ fun NoteScreen(
             ) {
                 Text(
                     text = note!!.name,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineMedium,
+                    //color = MaterialTheme.colorScheme.background
                 )
                 Text(
                     text = creationDate,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    //color = MaterialTheme.colorScheme.background
                 )
                 IconButton(onClick = { navController.navigate("EditNote/${id}") }) {
                     Icon(Icons.Filled.Edit, contentDescription = "Edit this note")
@@ -81,18 +83,22 @@ fun NoteScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = note!!.text,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                //color = MaterialTheme.colorScheme.background//MaterialTheme.colorScheme.onBackground
             )
+            Button(onClick = { navController.navigate("ConnectedNotes/${id}") }) {
+                Text("Show connected notes")
+            }
         }
 
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = {
-                    Text(text = "Delete Note")
+                    Text(text = "Delete Note", color = MaterialTheme.colorScheme.onBackground)
                 },
                 text = {
-                    Text("Are you sure you want to delete this note?")
+                    Text("Are you sure you want to delete this note?", color = MaterialTheme.colorScheme.onBackground)
                 },
                 confirmButton = {
                     Button(
@@ -115,6 +121,6 @@ fun NoteScreen(
             )
         }
     } else {
-        Text("Loading...", modifier = Modifier.padding(16.dp))
+        Text("Loading...", modifier = Modifier.padding(16.dp), color = MaterialTheme.colorScheme.onBackground)
     }
 }
